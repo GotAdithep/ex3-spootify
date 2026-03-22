@@ -10,3 +10,8 @@ class SharedLinkForm(ModelForm):
             "expired_date", 
             "song"
         ]
+        
+class UpdateSharedLinkForm(ModelForm):
+    class Meta:
+        model = SharedLink
+        fields = ["shared_url", "expired_date", "song"]

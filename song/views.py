@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .forms import SongForm
+from .forms import SongForm, UpdateSongForm
 from .models import Song
 
 def create_song(request):
@@ -22,4 +22,20 @@ def create_song(request):
 
 def read_song(request):
     songs = Song.objects.all().order_by('-created_at') # Order by newest first
-    return render(request, "song/read-song.html", {"songs": songs})
+    return render(request, "song/read-song.html", {"songs": songs}) 
+
+def update_song(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
+
+    if request.method == "POST":
+        form = UpdateSongForm(request.POST, instance=song)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Song updated successfully!")
+            return redirect("read_song")
+        else:
+            messages.error(request, "Failed to update song. Please check your inputs.")
+    else:
+        form = UpdateSongForm(instance=song)
+
+    return render(request, "song/update-song.html", {"form": form, "song": song})

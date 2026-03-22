@@ -16,6 +16,18 @@
                             <a href="{% url 'create_song_gen_request' %}" class="btn btn-sm btn-success">+ Add Request</a>
                         </div>
                         <div class="card-body">
+                            
+                            {% if messages %}
+                                <div class="col-12 mb-3">
+                                    {% for msg in messages %}
+                                        <div class="alert {% if msg.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show">
+                                            {{ msg }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered align-middle">
                                     <thead class="table-dark">
@@ -28,6 +40,7 @@
                                             <th scope="col">Voice Type</th>
                                             <th scope="col">Linked Song</th>
                                             <th scope="col">Created At</th>
+                                            <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,9 +54,12 @@
                                                 <td>{{ req.singer_voice_type }}</td>
                                                 <td>{{ req.song.title|default:"Pending" }}</td>
                                                 <td>{{ req.created_at|date:"M d, Y H:i" }}</td>
+                                                <td>
+                                                    <a href="{% url 'update_song_gen_request' req.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                                </td>
                                             </tr>
                                         {% empty %}
-                                            <tr><td colspan="8" class="text-center text-muted py-3">No requests found.</td></tr>
+                                            <tr><td colspan="9" class="text-center text-muted py-3">No requests found.</td></tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -53,5 +69,6 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

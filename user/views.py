@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .forms import UserForm
+from .forms import UserForm, UpdateUserForm
 from .models import User
 
 def create_user(request):
@@ -8,22 +8,31 @@ def create_user(request):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            # Success notification
             messages.success(request, "User created successfully!")
-            return redirect("create_user") # Ensure this matches the name in urls.py
+            return redirect("create_user")
         else:
-            # Error notification if validation fails (e.g., duplicate username)
             messages.error(request, "Failed to create user. Please check your inputs.")
     else:
-        # GET request
         form = UserForm()
-    
-    # Passing the form to the context allows Django to render field-specific errors if needed later
+
     return render(request, "user/create-user.html", {"form": form})
 
 def read_user(request):
-    # Fetch all user objects from the database
     users = User.objects.all()
-    
-    # Pass the users to the template
     return render(request, "user/read-user.html", {"users": users})
+
+def update_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+
+    if request.method == "POST":
+        form = UpdateUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "User updated successfully!")
+            return redirect("read_user")
+        else:
+            messages.error(request, "Failed to update user. Please check your inputs.")
+    else:
+        form = UpdateUserForm(instance=user)
+
+    return render(request, "user/update-user.html", {"form": form, "user": user})

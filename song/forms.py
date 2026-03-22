@@ -11,3 +11,8 @@ class SongForm(ModelForm):
             "generation_status", 
             "user"
         ]
+
+class UpdateSongForm(ModelForm):
+    class Meta:
+        model = Song
+        fields = ["title", "duration", "generation_status", "user"]

@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from user.views import create_user, read_user
-from song_gen_request.views import create_song_gen_request, read_song_gen_request
-from song.views import create_song, read_song
-from shared_link.views import create_shared_link, read_shared_link
+from user.views import create_user, read_user, update_user
+from song_gen_request.views import create_song_gen_request, read_song_gen_request, update_song_gen_request
+from song.views import create_song, read_song, update_song
+from shared_link.views import create_shared_link, read_shared_link, update_shared_link
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +30,9 @@ urlpatterns = [
     path('read-user', read_user, name="read_user"),
     path('read-song-gen-request', read_song_gen_request, name="read_song_gen_request"),
     path('read-song', read_song, name="read_song"),
-    path('read-shared-link', read_shared_link, name="read_shared_link")
+    path('read-shared-link', read_shared_link, name="read_shared_link"),
+    path("update-user/<int:user_id>/", update_user, name="update_user"),
+    path("update-song-gen-request/<int:request_id>/", update_song_gen_request, name="update_song_gen_request"),
+    path("update-song/<int:song_id>/", update_song, name="update_song"),
+    path("update-shared-link/<int:link_id>/", update_shared_link, name="update_shared_link"),
 ]
