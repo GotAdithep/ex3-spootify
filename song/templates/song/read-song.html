@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Song List</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    </head>
+    <body>
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">Song List</h4>
+                            <a href="{% url 'create_song' %}" class="btn btn-sm btn-success">+ Add New Song</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Duration (sec)</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for song in songs %}
+                                            <tr>
+                                                <td>{{ song.id }}</td>
+                                                <td>{{ song.title }}</td>
+                                                <td>{{ song.duration }}</td>
+                                                <td>
+                                                    <span class="badge {% if song.generation_status == 'success' %}bg-success{% elif song.generation_status == 'failed' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                                                        {{ song.generation_status|title }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ song.user.username|default:"None" }}</td>
+                                                <td>{{ song.created_at|date:"M d, Y H:i" }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr><td colspan="6" class="text-center text-muted py-3">No songs found.</td></tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

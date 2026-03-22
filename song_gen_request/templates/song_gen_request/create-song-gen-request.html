@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Create Song Request</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    </head>
+    <body>
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col-8 offset-2">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="card">
+                            <h4 class="card-header">Create Song Generation Request</h4>
+                            <div class="card-body">
+                                
+                                {% if messages %}
+                                    <div class="col-12 mb-3">
+                                        {% for msg in messages %}
+                                            <div class="alert {% if msg.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+                                                {{ msg }}
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="song_title" class="form-label">Song Title</label>
+                                            <input type="text" class="form-control" name="song_title" id="song_title" placeholder="Enter song title" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="mood" class="form-label">Mood</label>
+                                            <select class="form-select" name="mood" id="mood">
+                                                <option value="happy" selected>Happy</option>
+                                                <option value="energatic">Energetic</option>
+                                                <option value="sad">Sad</option>
+                                                <option value="depression">Depression</option>
+                                                <option value="calm">Calm</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="genre" class="form-label">Genre</label>
+                                            <select class="form-select" name="genre" id="genre">
+                                                <option value="pop" selected>Pop</option>
+                                                <option value="rock">Rock</option>
+                                                <option value="jazz">Jazz</option>
+                                                <option value="classical">Classical</option>
+                                                <option value="electronic">Electronic</option>
+                                                <option value="hiphop">Hip Hop</option>
+                                                <option value="country">Country</option>
+                                                <option value="metal">Metal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="occasion" class="form-label">Occasion</label>
+                                            <input type="text" class="form-control" name="occasion" id="occasion" placeholder="e.g. Birthday, Workout" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="singer_voice_type" class="form-label">Voice Type</label>
+                                            <input type="text" class="form-control" name="singer_voice_type" id="singer_voice_type" placeholder="e.g. Male Tenor, Female Soprano" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="optional_story" class="form-label">Optional Story</label>
+                                            <textarea class="form-control" name="optional_story" id="optional_story" rows="3" placeholder="Tell a story for the song context..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary mt-2">Submit Request</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    </body>
+</html>

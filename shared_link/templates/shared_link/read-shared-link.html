@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Shared Links</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">Shared Links</h4>
+                            <a href="{% url 'create_shared_link' %}" class="btn btn-sm btn-success">+ Add Shared Link</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Linked Song</th>
+                                            <th scope="col">Shared URL</th>
+                                            <th scope="col">Expiration Date</th>
+                                            <th scope="col">Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for link in links %}
+                                            <tr>
+                                                <td>{{ link.id }}</td>
+                                                <td>{{ link.song.title }}</td>
+                                                <td><a href="{{ link.shared_url }}" target="_blank">{{ link.shared_url }}</a></td>
+                                                <td>{{ link.expired_date|date:"M d, Y H:i" }}</td>
+                                                <td>{{ link.created_at|date:"M d, Y H:i" }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr><td colspan="5" class="text-center text-muted py-3">No shared links found.</td></tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
