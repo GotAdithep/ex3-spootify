@@ -36,3 +36,16 @@ def update_user(request, user_id):
         form = UpdateUserForm(instance=user)
 
     return render(request, "user/update-user.html", {"form": form, "user": user})
+
+def delete_user(request, user_id):
+    # Fetch the user or return a 404 if not found
+    user = get_object_or_404(User, pk=user_id)
+
+    if request.method == "POST":
+        # If the user clicks confirm, the form sends a POST request to delete
+        user.delete()
+        messages.success(request, "User deleted successfully!")
+        return redirect("read_user")
+    
+    # If it's a GET request, just show the confirmation page
+    return render(request, "user/delete-user.html", {"user": user})

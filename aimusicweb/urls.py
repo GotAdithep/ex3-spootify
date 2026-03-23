@@ -16,13 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from user.views import create_user, read_user, update_user
-from song_gen_request.views import create_song_gen_request, read_song_gen_request, update_song_gen_request
-from song.views import create_song, read_song, update_song
-from shared_link.views import create_shared_link, read_shared_link, update_shared_link
+from django.views.generic import TemplateView
+from user.views import create_user, read_user, update_user, delete_user
+from song_gen_request.views import create_song_gen_request, read_song_gen_request, update_song_gen_request, delete_song_gen_request
+from song.views import create_song, read_song, update_song, delete_song
+from shared_link.views import create_shared_link, read_shared_link, update_shared_link, delete_shared_link
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name='dashboard.html'), name='home'),
     path('create-user/', create_user, name="create_user"),
     path('create-song-gen-request/', create_song_gen_request, name="create_song_gen_request"),
     path('create-song/',create_song, name="create_song"),
@@ -35,4 +37,8 @@ urlpatterns = [
     path("update-song-gen-request/<int:request_id>/", update_song_gen_request, name="update_song_gen_request"),
     path("update-song/<int:song_id>/", update_song, name="update_song"),
     path("update-shared-link/<int:link_id>/", update_shared_link, name="update_shared_link"),
+    path("delete-user/<int:user_id>/", delete_user, name="delete_user"),
+    path("delete-song-gen-request/<int:request_id>/", delete_song_gen_request, name="delete_song_gen_request"),
+    path("delete-song/<int:song_id>/", delete_song, name="delete_song"),
+    path("delete-shared-link/<int:link_id>/", delete_shared_link, name="delete_shared_link")
 ]

@@ -9,7 +9,6 @@ def create_song(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Song created successfully!")
-            # Ensure "create_song" matches the name="" in your urls.py
             return redirect("create_song") 
         else:
             messages.error(request, "Failed to create song. Please check your inputs.")
@@ -17,7 +16,7 @@ def create_song(request):
         # GET request
         form = SongForm()
     
-    # Pass the form to the template so we can render the user dropdown
+
     return render(request, "song/create-song.html", {"form": form})
 
 def read_song(request):
@@ -39,3 +38,13 @@ def update_song(request, song_id):
         form = UpdateSongForm(instance=song)
 
     return render(request, "song/update-song.html", {"form": form, "song": song})
+
+def delete_song(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
+
+    if request.method == "POST":
+        song.delete()
+        messages.success(request, "Song deleted successfully!")
+        return redirect("read_song")
+    
+    return render(request, "song/delete-song.html", {"song": song})

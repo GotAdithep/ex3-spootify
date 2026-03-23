@@ -55,7 +55,10 @@
                                                 <td>{{ song.user.username|default:"None" }}</td>
                                                 <td>{{ song.created_at|date:"M d, Y H:i" }}</td>
                                                 <td>
-                                                    <a href="{% url 'update_song' song.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                                    <div class="d-flex gap-1">
+                                                        <a href="{% url 'update_song' song.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                                        <a href="{% url 'delete_song' song.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         {% empty %}

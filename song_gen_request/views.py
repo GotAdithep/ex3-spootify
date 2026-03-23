@@ -9,15 +9,8 @@ def create_song_gen_request(request):
     if request.method == "POST":
         form = SongGenRequestForm(request.POST)
         if form.is_valid():
-            # 1. Pause saving to the database
             song_request = form.save(commit=False) 
-            
-            # 2. Get or create the actual Song object
-            # Note: You need to replace this with your actual logic for getting/creating a song!
-            # Example: my_song = Song.objects.create(...) or my_song = Song.objects.get(id=...)
-            # song_request.song = my_song  
-            
-            # 3. Now save the complete object to the database
+
             song_request.save()
             
             messages.success(request, "Song generation request created successfully!")
@@ -49,3 +42,13 @@ def update_song_gen_request(request, request_id):
         form = UpdateSongGenRequestForm(instance=song_gen_request)
 
     return render(request, "song_gen_request/update-song-gen-request.html", {"form": form, "req": song_gen_request})
+
+def delete_song_gen_request(request, request_id):
+    song_gen_request = get_object_or_404(SongGenRequest, pk=request_id)
+
+    if request.method == "POST":
+        song_gen_request.delete()
+        messages.success(request, "Song generation request deleted successfully!")
+        return redirect("read_song_gen_request")
+    
+    return render(request, "song_gen_request/delete-song-gen-request.html", {"req": song_gen_request})

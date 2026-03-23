@@ -9,7 +9,6 @@ def create_shared_link(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Shared link created successfully!")
-            # Ensure "create_shared_link" matches the name="" in your urls.py
             return redirect("create_shared_link") 
         else:
             messages.error(request, "Failed to create shared link. Please check your inputs.")
@@ -38,3 +37,13 @@ def update_shared_link(request, link_id):
         form = UpdateSharedLinkForm(instance=shared_link)
 
     return render(request, "shared_link/update-shared-link.html", {"form": form, "link": shared_link})
+
+def delete_shared_link(request, link_id):
+    shared_link = get_object_or_404(SharedLink, pk=link_id)
+
+    if request.method == "POST":
+        shared_link.delete()
+        messages.success(request, "Shared link deleted successfully!")
+        return redirect("read_shared_link")
+    
+    return render(request, "shared_link/delete-shared-link.html", {"link": shared_link})

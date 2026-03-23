@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Spootify crud</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    </head>
+    <body class="bg-light">
+        <div class="container py-5">
+            
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2 class="fw-bold text-dark">Spootify CRUD</h2>
+                    <p class="text-muted">Select an entity below to manage records.</p>
+                </div>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-sm border-primary border-top border-3">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Users</h4>
+                            <p class="text-muted small">Manage user accounts and limits.</p>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <a href="{% url 'read_user' %}" class="btn btn-outline-primary">View All Users</a>
+                                <a href="{% url 'create_user' %}" class="btn btn-primary">Add User</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-sm border-success border-top border-3">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Songs</h4>
+                            <p class="text-muted small">Manage generated audio files.</p>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <a href="{% url 'read_song' %}" class="btn btn-outline-success">View All Songs</a>
+                                <a href="{% url 'create_song' %}" class="btn btn-success">Add Song</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-sm border-warning border-top border-3">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Song Requests</h4>
+                            <p class="text-muted small">Manage generation prompts and moods.</p>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <a href="{% url 'read_song_gen_request' %}" class="btn btn-outline-dark">View Requests</a>
+                                <a href="{% url 'create_song_gen_request' %}" class="btn btn-warning text-dark">Add Request</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-sm border-danger border-top border-3">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Shared Links</h4>
+                            <p class="text-muted small">Manage public URLs and expirations.</p>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <a href="{% url 'read_shared_link' %}" class="btn btn-outline-danger">View Links</a>
+                                <a href="{% url 'create_shared_link' %}" class="btn btn-danger">Add Link</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
