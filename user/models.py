@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 
 class User(AbstractUser):
-    daily_gen_count = models.IntegerField()
+    daily_gen_count = models.IntegerField(blank=True, null=True)
 
     class Meta:
         db_table = "user"
