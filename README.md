@@ -68,7 +68,7 @@ click any folder and you could crud there
 
 ---
 
-### 7. Option2 crud by endpoints
+### 7. Option2 crud by simple views
 in landing page there is a dashboard with buttons thats redirect to read and add. update and del buttons is in read page.
 ```python
 
