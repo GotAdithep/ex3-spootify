@@ -98,3 +98,41 @@ path('read-shared-link/', read_shared_link, name="read_shared_link"),
 path("update-shared-link/<int:link_id>/", update_shared_link, name="update_shared_link"),
 path("delete-shared-link/<int:link_id>/", delete_shared_link, name="delete_shared_link")
 ```
+### 8. Screenshots
+this is the landing page
+![alt text](<screenshots/Screenshot 2026-03-24 102559.png>)
+
+this is simple view show
+
+this is when click into view all user button or go to http://127.0.0.1:8000/read-user
+![alt text](image.png)
+
+when click create button or go to  http://127.0.0.1:8000/create-user
+![alt text](image-1.png)
+when create success it will show "User created successfully!"
+
+now that user with name testcreate2 appear in id 14
+![alt text](image-2.png)
+can also see in django admin but you have to create superuser first
+![alt text](image-3.png)
+
+so next is update button access on read page
+so i will chage from testcreate2 into testupdate2 as in picture below.
+![alt text](image-4.png)
+
+now that id 14 testcreate2 turn into testupdate2
+![alt text](image-5.png)
+
+next is when click delete button it show warning
+![alt text](image-6.png)
+
+i clicked yes and it is gone now.
+![alt text](image-7.png)
+
+
+i also do django admin so
+once login django admin can choose topics in side bar and click add user and add directly
+![alt text](image-8.png)
+
+can click into any data and update and delete directly too
+![alt text](image-9.png)
