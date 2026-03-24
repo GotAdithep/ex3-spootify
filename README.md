@@ -14,7 +14,7 @@ Make sure you have the following installed on your machine:
 Navigate to the project folder in your terminal:
 
 ```bash
-cd AIMUSICWEB
+cd "into folder"
 ```
 
 ### 2. Create a Virtual Environment (Recommended)
