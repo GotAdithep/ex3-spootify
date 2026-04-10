@@ -17,28 +17,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-from user.views import create_user, read_user, update_user, delete_user
-from song_gen_request.views import create_song_gen_request, read_song_gen_request, update_song_gen_request, delete_song_gen_request
-from song.views import create_song, read_song, update_song, delete_song
-from shared_link.views import create_shared_link, read_shared_link, update_shared_link, delete_shared_link
+from apps.user.views import CreateUserView, ListUserView, UpdateUserView, DeleteUserView
+from apps.song_gen_request.views import CreateSongGenRequestView, ListSongGenRequestView, UpdateSongGenRequestView, DeleteSongGenRequest
+from apps.song.views import CreateSongView, ListSongView, UpdateSongView, DeleteSongView
+from apps.shared_link.views import CreateSharedLinkView, ListSharedLinkView, UpdateSharedLinkView, DeleteSharedLinkView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='dashboard.html'), name='home'),
-    path('create-user/', create_user, name="create_user"),
-    path('create-song-gen-request/', create_song_gen_request, name="create_song_gen_request"),
-    path('create-song/',create_song, name="create_song"),
-    path('create-shared-link',create_shared_link, name="create_shared_link"),
-    path('read-user', read_user, name="read_user"),
-    path('read-song-gen-request', read_song_gen_request, name="read_song_gen_request"),
-    path('read-song', read_song, name="read_song"),
-    path('read-shared-link', read_shared_link, name="read_shared_link"),
-    path("update-user/<int:user_id>/", update_user, name="update_user"),
-    path("update-song-gen-request/<int:request_id>/", update_song_gen_request, name="update_song_gen_request"),
-    path("update-song/<int:song_id>/", update_song, name="update_song"),
-    path("update-shared-link/<int:link_id>/", update_shared_link, name="update_shared_link"),
-    path("delete-user/<int:user_id>/", delete_user, name="delete_user"),
-    path("delete-song-gen-request/<int:request_id>/", delete_song_gen_request, name="delete_song_gen_request"),
-    path("delete-song/<int:song_id>/", delete_song, name="delete_song"),
-    path("delete-shared-link/<int:link_id>/", delete_shared_link, name="delete_shared_link")
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('create-user/', CreateUserView.as_view(), name="create_user"),
+    path('create-song-gen-request/', CreateSongGenRequestView.as_view(), name="create_song_gen_request"),
+    path('create-song/',CreateSongView.as_view(), name="create_song"),
+    path('create-shared-link',CreateSharedLinkView.as_view(), name="create_shared_link"),
+    path('read-user', ListUserView.as_view(), name="read_user"),
+    path('read-song-gen-request', ListSongGenRequestView.as_view(), name="read_song_gen_request"),
+    path('read-song', ListSongView.as_view(), name="read_song"),
+    path('read-shared-link', ListSharedLinkView.as_view(), name="read_shared_link"),
+    path("update-user/<int:user_id>/", UpdateUserView.as_view(), name="update_user"),
+    path("update-song-gen-request/<int:request_id>/", UpdateSongGenRequestView.as_view(), name="update_song_gen_request"),
+    path("update-song/<int:song_id>/", UpdateSongView.as_view(), name="update_song"),
+    path("update-shared-link/<int:link_id>/", UpdateSharedLinkView.as_view(), name="update_shared_link"),
+    path("delete-user/<int:user_id>/", DeleteUserView.as_view(), name="delete_user"),
+    path("delete-song-gen-request/<int:request_id>/", DeleteSongGenRequest.as_view(), name="delete_song_gen_request"),
+    path("delete-song/<int:song_id>/", DeleteSongView.as_view(), name="delete_song"),
+    path("delete-shared-link/<int:link_id>/", DeleteSharedLinkView.as_view(), name="delete_shared_link")
 ]
