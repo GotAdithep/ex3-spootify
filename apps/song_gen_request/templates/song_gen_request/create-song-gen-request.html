@@ -12,6 +12,8 @@
                 <div class="col-8 offset-2">
                     <form method="POST">
                         {% csrf_token %}
+                        <input type="hidden" name="generation_status" value="pending">
+                        <input type="hidden" name="task_id" value="">
                         <div class="card">
                             <h4 class="card-header">Create Song Generation Request</h4>
                             <div class="card-body">

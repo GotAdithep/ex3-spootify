@@ -19,12 +19,19 @@ class SongGenRequest(models.Model):
         COUNTRY = "country", "country"
         METAL = "metal", "metal"
         
+    class Generation_Status(models.TextChoices):
+        SUCCESS = "success", "success"
+        FAILED = "failed", "failed"
+        PENDING = "pending", "pending"
+        
     song_title = models.CharField(max_length=50)
+    task_id = models.CharField(max_length=200, blank=True, null=True)
     mood = models.CharField(max_length=10, choices=Moodchoices.choices,default=Moodchoices.HAPPY)
     genre = models.CharField(max_length=10, choices=Genrechoices.choices,default=Genrechoices.POP)
     occasion = models.CharField(max_length=50)
     singer_voice_type = models.CharField(max_length=50)
     optional_story = models.CharField(max_length=150, null=True, blank=True)
+    generation_status = models.CharField(max_length=7,choices=Generation_Status.choices, default=Generation_Status.PENDING)
     song = models.OneToOneField("song.Song", on_delete=models.CASCADE, related_name="song_gen_request", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
