@@ -4,7 +4,7 @@ from django.db import models
 class SongGenRequest(models.Model):
     class Moodchoices(models.TextChoices):
         HAPPY = "happy", "happy"
-        ENERGATIC = "energatic", "energatic"
+        ENERGETIC = "energetic", "energetic"
         SAD = "sad", "sad"
         DEPRESSION = "depression", "depression"
         CALM = "calm", "calm"
@@ -26,6 +26,7 @@ class SongGenRequest(models.Model):
         
     song_title = models.CharField(max_length=50)
     task_id = models.CharField(max_length=200, blank=True, null=True)
+    user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, blank=True, related_name="song_gen_requests")
     mood = models.CharField(max_length=10, choices=Moodchoices.choices,default=Moodchoices.HAPPY)
     genre = models.CharField(max_length=10, choices=Genrechoices.choices,default=Genrechoices.POP)
     occasion = models.CharField(max_length=50)
