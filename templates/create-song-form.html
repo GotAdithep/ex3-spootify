@@ -1,139 +1,93 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Song</title>
-
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+{% extends "layouts/base.html" %} 
+{% load static %} 
+{% block title %} create-song-form {% endblock %} 
+{% block css %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}" />
-</head>
+{% endblock %} 
+{% block body %}
 
-<body class="bg-body" style="height: 100vh">
+    {% include "components/nav-bar.html" %}
 
-<!-- NAVBAR -->
-<header>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <div class="logo">
-                    <i class="bi bi-music-note text-white"></i>
-                </div>
-                <span class="fw-bold text-white ms-3">Ai Music Studio</span>
-            </a>
-
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item px-3">
-                        <i class="bi bi-house-door text-white-50 fs-4"></i>
-                        <a class="ms-2 text-white-50 text-decoration-none" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item px-3">
-                        <i class="bi bi-person text-white-50 fs-4"></i>
-                        <a class="ms-2 text-white-50 text-decoration-none" href="#">Login</a>
-                    </li>
-                </ul>
-                <button class="btn btn-primary ms-3">Signup</button>
-            </div>
-        </div>
-    </nav>
-</header>
-
-<!-- HERO SECTION (same gradient style) -->
-<main>
-<section class="hero d-flex align-items-center">
-    <div class="container">
-
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-
-                <!-- TITLE -->
-                <div class="text-center mb-4">
-                    <h1>Create Your Song</h1>
-                    <p class="text-white-50">
-                        Describe your idea and let AI generate your music
-                    </p>
-                </div>
-
-                <!-- FORM CARD -->
-                <div class="p-4 rounded-4" style="background: rgba(255,255,255,0.03); backdrop-filter: blur(10px);">
-
-                    <form method="POST">
-                        {% csrf_token %}
-
+    <!-- HERO SECTION (same gradient style) -->
+    <main>
+        <section class="hero d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
                         <!-- TITLE -->
-                        <div class="mb-3">
-                            <label class="form-label">Song Title</label>
-                            <input type="text" name="song_title" class="form-control bg-dark text-white border-0" required>
+                        <div class="text-center mb-4">
+                            <h1>Create Your Song</h1>
+                            <p class="text-white-50">Describe your idea and let AI generate your music</p>
                         </div>
 
-                        <!-- MOOD + GENRE -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Mood</label>
-                                <select name="mood" class="form-select bg-dark text-white border-0">
-                                    <option value="happy">Happy</option>
-                                    <option value="energatic">Energetic</option>
-                                    <option value="sad">Sad</option>
-                                    <option value="depression">Depression</option>
-                                    <option value="calm">Calm</option>
-                                </select>
-                            </div>
+                        <!-- FORM CARD -->
+                        <div class="p-4 rounded-4" style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px)">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="generation_status" value="pending" />
+                                <input type="hidden" name="task_id" value="" />
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Genre</label>
-                                <select name="genre" class="form-select bg-dark text-white border-0">
-                                    <option value="pop">Pop</option>
-                                    <option value="rock">Rock</option>
-                                    <option value="jazz">Jazz</option>
-                                    <option value="classical">Classical</option>
-                                    <option value="electronic">Electronic</option>
-                                    <option value="hiphop">Hip Hop</option>
-                                    <option value="country">Country</option>
-                                    <option value="metal">Metal</option>
-                                </select>
-                            </div>
+                                <!-- TITLE -->
+                                <div class="mb-3">
+                                    <label class="form-label">Song Title</label>
+                                    <input type="text" name="song_title" class="form-control bg-dark text-white border-0" required />
+                                </div>
+
+                                <!-- MOOD + GENRE -->
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Mood</label>
+                                        <select name="mood" class="form-select bg-dark text-white border-0">
+                                            <option value="happy">Happy</option>
+                                            <option value="energatic">Energetic</option>
+                                            <option value="sad">Sad</option>
+                                            <option value="depression">Depression</option>
+                                            <option value="calm">Calm</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Genre</label>
+                                        <select name="genre" class="form-select bg-dark text-white border-0">
+                                            <option value="pop">Pop</option>
+                                            <option value="rock">Rock</option>
+                                            <option value="jazz">Jazz</option>
+                                            <option value="classical">Classical</option>
+                                            <option value="electronic">Electronic</option>
+                                            <option value="hiphop">Hip Hop</option>
+                                            <option value="country">Country</option>
+                                            <option value="metal">Metal</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- OCCASION -->
+                                <div class="mb-3">
+                                    <label class="form-label">Occasion</label>
+                                    <input type="text" name="occasion" class="form-control bg-dark text-white border-0" required />
+                                </div>
+
+                                <!-- VOICE -->
+                                <div class="mb-3">
+                                    <label class="form-label">Singer Voice Type</label>
+                                    <input type="text" name="singer_voice_type" class="form-control bg-dark text-white border-0" required />
+                                </div>
+
+                                <!-- STORY -->
+                                <div class="mb-4">
+                                    <label class="form-label">Optional Story</label>
+                                    <textarea name="optional_story" class="form-control bg-dark text-white border-0"></textarea>
+                                </div>
+
+                                <!-- BUTTON -->
+                                <div class="text-center">
+                                    <button class="btn btn-primary px-5 py-2">Generate Song</button>
+                                </div>
+                            </form>
                         </div>
-
-                        <!-- OCCASION -->
-                        <div class="mb-3">
-                            <label class="form-label">Occasion</label>
-                            <input type="text" name="occasion" class="form-control bg-dark text-white border-0" required>
-                        </div>
-
-                        <!-- VOICE -->
-                        <div class="mb-3">
-                            <label class="form-label">Singer Voice Type</label>
-                            <input type="text" name="singer_voice_type" class="form-control bg-dark text-white border-0" required>
-                        </div>
-
-                        <!-- STORY -->
-                        <div class="mb-4">
-                            <label class="form-label">Optional Story</label>
-                            <textarea name="optional_story" class="form-control bg-dark text-white border-0"></textarea>
-                        </div>
-
-                        <!-- BUTTON -->
-                        <div class="text-center">
-                            <button class="btn btn-primary px-5 py-2">
-                                Generate Song
-                            </button>
-                        </div>
-
-                    </form>
-
+                    </div>
                 </div>
-
             </div>
-        </div>
-
-    </div>
-</section>
-</main>
-
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</body>
-</html>
+        </section>
+    </main>
+{% endblock %}

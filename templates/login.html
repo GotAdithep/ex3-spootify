@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %} 
+{% load static %} 
+{% load socialaccount %}
+{% block title %} login {% endblock %} 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %} 
+{% block body %}
+
+
+    {% include "components/nav-bar.html" %}
+
+    <!-- MAIN -->
+    <main class="container d-flex justify-content-center align-items-center min-vh-100 py-5">
+        <div class="card bg-dark text-white border-0 shadow-lg w-100" style="max-width: 420px; border-radius: 20px; backdrop-filter: blur(12px)">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="text-center fw-bold mb-2">Welcome Back</h2>
+                <p class="text-center text-white-50 mb-4">Sign in to continue creating</p>
+
+                <a href="{% provider_login_url 'google' %}">
+                    <button type="button" class="btn btn-light w-100 mb-3" disabled><i class="bi bi-google me-2"></i> Continue with Google</button>
+                </a>
+            </div>
+        </div>
+    </main>
+{% endblock %}

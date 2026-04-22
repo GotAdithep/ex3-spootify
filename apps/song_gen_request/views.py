@@ -47,22 +47,23 @@ class CreateSongGenRequestView(CreateView):
             resp = req.post("https://api.sunoapi.org/api/v1/generate", json=body, headers=headers)
             json = resp.json()
             code = json["code"]
-            task_id = json["data"]["taskId"]
+            
             if code == 200:
+                task_id = json["data"]["taskId"]
                 song_request = form.save(commit=False) 
                 song_request.task_id = task_id
                 song_request.save()
                 messages.success(request, "Song generation request created successfully!")
-                return redirect("create-song-form") 
+                return redirect("library") 
             else:
                 messages.error(request, "API falied")
-                return redirect("create-song-form") 
+                return redirect("create_song_form") 
             
             
         else:
             print(form.errors)
             messages.error(request, "Failed to create request. Please check your inputs.")
-            return redirect("create-song-form")
+            return redirect("create_song_form")
 
 class ListSongGenRequestView(ListView):
     def get(self, request):

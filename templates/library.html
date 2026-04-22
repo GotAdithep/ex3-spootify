@@ -1,107 +1,56 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Library</title>
+{% extends "layouts/base.html" %} 
+{% load static %} 
+{% block title %} Libarary {% endblock %} 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %} 
+{% block body %}
 
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
-</head>
 
-<body class="bg-black text-white">
+    {% include "components/nav-bar.html" %}
 
-<!-- NAVBAR -->
-<header>
-    <nav class="navbar navbar-expand-lg border-bottom border-dark">
+    <!-- MAIN -->
+    <main class="py-5">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <div class="bg-primary p-2 rounded">
-                    <i class="bi bi-music-note text-white"></i>
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="fw-bold">Your Library</h1>
+                    <p class="text-white-50 mb-0">6 songs created</p>
                 </div>
-                <span class="fw-bold text-white ms-3">AI Music Studio</span>
-            </a>
 
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item px-3">
-                    <i class="bi bi-house-door text-white-50"></i>
-                    <a class="ms-2 text-white-50 text-decoration-none" href="#">Home</a>
-                </li>
-                <li class="nav-item px-3">
-                    <i class="bi bi-person text-white-50"></i>
-                    <a class="ms-2 text-white-50 text-decoration-none" href="#">Login</a>
-                </li>
-                <li class="nav-item ms-3">
-                    <button class="btn btn-primary px-4">Sign Up</button>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
-
-<!-- MAIN -->
-<main class="py-5">
-    <div class="container">
-
-        <!-- HEADER -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h1 class="fw-bold">Your Library</h1>
-                <p class="text-white-50 mb-0">6 songs created</p>
+                <!-- CREATE BUTTON (best placement) -->
+                <a href="{% url 'create_song_form' %}" class="btn btn-primary px-4 py-2">
+                    <i class="bi bi-plus-lg me-2"></i>Create Song
+                </a>
             </div>
 
-            <!-- CREATE BUTTON (best placement) -->
-            <button class="btn btn-primary px-4 py-2">
-                <i class="bi bi-plus-lg me-2"></i>Create Song
-            </button>
-        </div>
-
-        <!-- SONG CARDS -->
-        <div class="row g-4">
-
-            <!-- CARD 1 -->
-            <div class="col-md-4">
-                <div class="rounded-4 p-4 d-flex flex-column justify-content-end"
-                     style="height: 300px; background: linear-gradient(135deg, #2b3a8a, #3b2f7f);">
-                    
-                    <div class="text-white-50 small">
-                        <i class="bi bi-clock me-1"></i> 3:42
+            <!-- SONG CARDS -->
+            <div class="row g-4">
+                <!-- CARD 1 -->
+                <div class="col-md-4">
+                    <div class="rounded-4 p-4 d-flex flex-column justify-content-end" style="height: 300px; background: linear-gradient(135deg, #2b3a8a, #3b2f7f)">
+                        <div class="text-white-50 small"><i class="bi bi-clock me-1"></i> 3:42</div>
                     </div>
+                    <h5 class="mt-3 fw-semibold">Midnight Dreams</h5>
                 </div>
-                <h5 class="mt-3 fw-semibold">Midnight Dreams</h5>
-            </div>
 
-            <!-- CARD 2 -->
-            <div class="col-md-4">
-                <div class="rounded-4 p-4 d-flex flex-column justify-content-end"
-                     style="height: 300px; background: linear-gradient(135deg, #1f6feb, #17a2b8);">
-                    
-                    <div class="text-white-50 small">
-                        <i class="bi bi-clock me-1"></i> 4:15
+                <!-- CARD 2 -->
+                <div class="col-md-4">
+                    <div class="rounded-4 p-4 d-flex flex-column justify-content-end" style="height: 300px; background: linear-gradient(135deg, #1f6feb, #17a2b8)">
+                        <div class="text-white-50 small"><i class="bi bi-clock me-1"></i> 4:15</div>
                     </div>
+                    <h5 class="mt-3 fw-semibold">Electric Sunrise</h5>
                 </div>
-                <h5 class="mt-3 fw-semibold">Electric Sunrise</h5>
-            </div>
 
-            <!-- CARD 3 -->
-            <div class="col-md-4">
-                <div class="rounded-4 p-4 d-flex flex-column justify-content-end"
-                     style="height: 300px; background: linear-gradient(135deg, #2c3e50, #1e3c72);">
-                    
-                    <div class="text-white-50 small">
-                        <i class="bi bi-clock me-1"></i> 3:28
+                <!-- CARD 3 -->
+                <div class="col-md-4">
+                    <div class="rounded-4 p-4 d-flex flex-column justify-content-end" style="height: 300px; background: linear-gradient(135deg, #2c3e50, #1e3c72)">
+                        <div class="text-white-50 small"><i class="bi bi-clock me-1"></i> 3:28</div>
                     </div>
+                    <h5 class="mt-3 fw-semibold">Rainy Afternoon</h5>
                 </div>
-                <h5 class="mt-3 fw-semibold">Rainy Afternoon</h5>
             </div>
-
         </div>
-
-    </div>
-</main>
-
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</body>
-</html>
+    </main>
+{% endblock %}
