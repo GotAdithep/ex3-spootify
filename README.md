@@ -1,138 +1,119 @@
-#  Spootify CRUD
+# AI Music Web
 
-## 📌 Prerequisites
-Make sure you have the following installed on your machine:
-
-- Python 3.8 or higher  
-- pip (Python package installer)
+A Django web app that lets users generate AI-powered songs using the Suno API. Sign in with Google, describe your song, and get a fully generated track with lyrics and album art saved to your personal library.
 
 ---
 
-## ⚙️ Installation & Setup
+## Features
 
-### 1. Clone or Download the Repository
-Navigate to the project folder in your terminal:
+- **Google OAuth login** via django-allauth
+- **AI song generation** powered by [Suno API](https://sunoapi.org)
+- **Custom song settings** — mood, genre, occasion, voice type, and optional story
+- **Instrumental toggle** — generate music-only tracks with no vocals
+- **Personal library** — song cards with album art, audio player, and collapsible lyrics
+- **Pending song tracking** — generating songs show a "Check Status" button; page does not auto-refresh so existing songs keep playing
+
+---
+
+## Tech Stack
+
+- Python 3.13 / Django 6
+- Bootstrap 5 + Bootstrap Icons
+- SQLite (development database)
+- Suno API (external AI music generation)
+- django-allauth (Google OAuth)
+- Django REST Framework
 
 ```bash
 cd "into folder"
 ```
 
-### 2. Create a Virtual Environment (Recommended)
+- Python 3.10 or higher
+- pip
+- A [Suno API](https://sunoapi.org) key
+- A Google OAuth client ID and secret (via Google Cloud Console)
+
+---
+
+## Installation & Setup
+
+### 1. Clone the repository
+
+```bash
+git clone <repo-url>
+cd aimusicweb
+```
+
+### 2. Create and activate a virtual environment
 
 ```bash
 python -m venv venv
-```
 
-Activate it:
-
-- **Windows:**
-```bash
+# Windows
 venv\Scripts\activate
-```
 
-- **Mac/Linux:**
-```bash
+# Mac/Linux
 source venv/bin/activate
 ```
 
-### 3. Install Django
+### 3. Install dependencies
 
 ```bash
-pip install django
+pip install -r requirements.txt
 ```
 
-### 4. Apply Database Migrations
+### 4. Configure environment variables
+
+Create a `.env` file in the `aimusicweb/` directory:
+
+```env
+SUNO_API_KEY=your_suno_api_key_here
+GENERATOR_STRATEGY=suno
+```
+
+### 5. Apply database migrations
 
 ```bash
-python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 5. Run the Development Server
+### 6. Set up Google OAuth
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create an OAuth 2.0 client
+2. Set the redirect URI to `http://127.0.0.1:8000/accounts/google/login/callback/`
+3. In Django admin (`/admin`), go to **Sites** and update the domain to `127.0.0.1:8000`
+4. Go to **Social applications** → Add → select Google, enter your client ID and secret
+
+### 7. Run the development server
 
 ```bash
 python manage.py runserver
 ```
 
-### 6. Access the Application
-
-Open your web browser and go to:  
-http://127.0.0.1:8000/
-
-### 7. Option1 crud by django admin
-```bash
-python manage.py createsuperuser
-```
-then go to http://127.0.0.1:8000/admin and login
-click any folder and you could crud there
+Open `http://127.0.0.1:8000` in your browser.
 
 ---
 
-### 7. Option2 crud by simple views
-in landing page there is a dashboard with buttons thats redirect to read and add. update and del buttons is in read page.
-```python
+## How It Works
 
-path('', TemplateView.as_view(template_name='dashboard.html'), name='home'),
+1. Sign in with your Google account
+2. Click **Create Song** and fill in the form (mood, genre, occasion, etc.)
+3. Submit — the app calls the Suno API and saves a pending request
+4. Go to your **Library** and click **Check Status** after ~2-3 minutes
+5. Once ready, the song card appears with album art, an audio player, and a lyrics panel
 
-# User CRUD
-path('create-user/', create_user, name="create_user"),
-path('read-user/', read_user, name="read_user"),
-path("update-user/<int:user_id>/", update_user, name="update_user"),
-path("delete-user/<int:user_id>/", delete_user, name="delete_user"),
+---
 
-# Song Gen Request CRUD
-path('create-song-gen-request/', create_song_gen_request, name="create_song_gen_request"),
-path('read-song-gen-request/', read_song_gen_request, name="read_song_gen_request"),
-path("update-song-gen-request/<int:request_id>/", update_song_gen_request, name="update_song_gen_request"),
-path("delete-song-gen-request/<int:request_id>/", delete_song_gen_request, name="delete_song_gen_request"),
+## Environment Variables
 
-# Song CRUD
-path('create-song/', create_song, name="create_song"),
-path('read-song/', read_song, name="read_song"),
-path("update-song/<int:song_id>/", update_song, name="update_song"),
-path("delete-song/<int:song_id>/", delete_song, name="delete_song"),
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `SUNO_API_KEY` | Your Suno API bearer token | — |
+| `GENERATOR_STRATEGY` | `suno` for real API, `mock` for offline testing | `suno` |
 
-# Shared Link CRUD
-path('create-shared-link/', create_shared_link, name="create_shared_link"),
-path('read-shared-link/', read_shared_link, name="read_shared_link"),
-path("update-shared-link/<int:link_id>/", update_shared_link, name="update_shared_link"),
-path("delete-shared-link/<int:link_id>/", delete_shared_link, name="delete_shared_link")
-```
-### 8. Screenshots
-this is the landing page
-![alt text](<screenshots/Screenshot 2026-03-24 102559.png>)
+---
 
-this is simple view show
-
-this is when click into view all user button or go to http://127.0.0.1:8000/read-user
-![alt text](image.png)
-
-when click create button or go to  http://127.0.0.1:8000/create-user
-![alt text](image-1.png)
-when create success it will show "User created successfully!"
-
-now that user with name testcreate2 appear in id 14
-![alt text](image-2.png)
-can also see in django admin but you have to create superuser first
-![alt text](image-3.png)
-
-so next is update button access on read page
-so i will chage from testcreate2 into testupdate2 as in picture below.
-![alt text](image-4.png)
-
-now that id 14 testcreate2 turn into testupdate2
-![alt text](image-5.png)
-
-next is when click delete button it show warning
-![alt text](image-6.png)
-
-i clicked yes and it is gone now.
-![alt text](image-7.png)
-
-
-i also do django admin so
-once login django admin can choose topics in side bar and click add user and add directly
-![alt text](image-8.png)
+## Project Structure
 
 can click into any data and update and delete directly too
 ![alt text](image-9.png)

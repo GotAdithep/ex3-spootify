@@ -1,56 +1,121 @@
-{% extends "layouts/base.html" %} 
-{% load static %} 
-{% block title %} Libarary {% endblock %} 
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %} Library {% endblock %}
+{% block extra_head %}{% endblock %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
-{% endblock %} 
+    <link rel="stylesheet" href="{% static 'css/library.css' %}" />
+{% endblock %}
 {% block body %}
+{% include "components/nav-bar.html" %}
 
+<main class="container py-5">
 
-    {% include "components/nav-bar.html" %}
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="fw-bold mb-1">Your Library</h1>
+            <p class="text-white-50 mb-0">{{ songs|length }} song{{ songs|length|pluralize }}</p>
+        </div>
+        <a href="{% url 'create_song_form' %}" class="btn btn-primary px-4 py-2">
+            <i class="bi bi-plus-lg me-2"></i>Create Song
+        </a>
+    </div>
 
-    <!-- MAIN -->
-    <main class="py-5">
-        <div class="container">
-            <!-- HEADER -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h1 class="fw-bold">Your Library</h1>
-                    <p class="text-white-50 mb-0">6 songs created</p>
+    {% if songs or pending_requests %}
+    <div class="row g-4">
+
+        {% for song in songs %}
+        {% cycle 'grad-1' 'grad-2' 'grad-3' 'grad-4' 'grad-5' as song_grad silent %}
+
+        <div class="col-md-4 col-sm-6">
+
+            <!-- Card -->
+            <a href="#song-{{ song.id }}" class="song-card-link">
+                <div class="song-card">
+                    <div class="song-card-art {{ song_grad }}">
+                        {% if song.image_url %}
+                        <img src="{{ song.image_url }}" alt="{{ song.title }}" class="song-card-img" />
+                        {% endif %}
+                        <div class="play-icon">
+                            <i class="bi bi-play-fill"></i>
+                        </div>
+                    </div>
+                    <div class="song-card-info">
+                        <div class="fw-semibold text-truncate">{{ song.title }}</div>
+                        <div class="text-white-50 small mt-1">
+                            <i class="bi bi-clock me-1"></i>{{ song.duration }}s
+                        </div>
+                    </div>
                 </div>
+            </a>
 
-                <!-- CREATE BUTTON (best placement) -->
-                <a href="{% url 'create_song_form' %}" class="btn btn-primary px-4 py-2">
-                    <i class="bi bi-plus-lg me-2"></i>Create Song
-                </a>
+            <!-- Modal (position:fixed — visually independent of this col) -->
+            <div class="song-modal-overlay" id="song-{{ song.id }}">
+                <div class="song-modal">
+                    <a href="#" class="song-modal-close" title="Close">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                    <div class="song-modal-art {{ song_grad }}">
+                        {% if song.image_url %}
+                        <img src="{{ song.image_url }}" alt="{{ song.title }}" class="song-modal-img" />
+                        {% else %}
+                        <i class="bi bi-music-note-beamed"></i>
+                        <div class="modal-art-title">{{ song.title }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="song-modal-body">
+                        <p class="text-white-50 small mb-1 text-uppercase" style="letter-spacing:.08em">Now Playing</p>
+                        <h4 class="fw-bold mb-1">{{ song.title }}</h4>
+                        <p class="text-white-50 small mb-3">
+                            <i class="bi bi-clock me-1"></i>{{ song.duration }}s
+                        </p>
+                        {% if song.song_url %}
+                        <audio controls>
+                            <source src="{{ song.song_url }}" type="audio/mpeg" />
+                        </audio>
+                        {% else %}
+                        <p class="text-white-50 small">Audio not available.</p>
+                        {% endif %}
+                        {% if song.lyrics %}
+                        <details class="mt-3">
+                            <summary class="text-white-50 small" style="cursor:pointer">
+                                <i class="bi bi-text-left me-1"></i>Show Lyrics
+                            </summary>
+                            <pre class="lyrics-text mt-2">{{ song.lyrics }}</pre>
+                        </details>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
 
-            <!-- SONG CARDS -->
-            <div class="row g-4">
-                <!-- CARD 1 -->
-                <div class="col-md-4">
-                    <div class="rounded-4 p-4 d-flex flex-column justify-content-end" style="height: 300px; background: linear-gradient(135deg, #2b3a8a, #3b2f7f)">
-                        <div class="text-white-50 small"><i class="bi bi-clock me-1"></i> 3:42</div>
-                    </div>
-                    <h5 class="mt-3 fw-semibold">Midnight Dreams</h5>
-                </div>
+        </div>
+        {% endfor %}
 
-                <!-- CARD 2 -->
-                <div class="col-md-4">
-                    <div class="rounded-4 p-4 d-flex flex-column justify-content-end" style="height: 300px; background: linear-gradient(135deg, #1f6feb, #17a2b8)">
-                        <div class="text-white-50 small"><i class="bi bi-clock me-1"></i> 4:15</div>
-                    </div>
-                    <h5 class="mt-3 fw-semibold">Electric Sunrise</h5>
+        {% for req in pending_requests %}
+        <div class="col-md-4 col-sm-6">
+            <div class="song-card song-card-pending">
+                <div class="song-card-art grad-pending">
+                    <i class="bi bi-hourglass-split" style="font-size:2rem; color:rgba(255,255,255,0.4)"></i>
                 </div>
-
-                <!-- CARD 3 -->
-                <div class="col-md-4">
-                    <div class="rounded-4 p-4 d-flex flex-column justify-content-end" style="height: 300px; background: linear-gradient(135deg, #2c3e50, #1e3c72)">
-                        <div class="text-white-50 small"><i class="bi bi-clock me-1"></i> 3:28</div>
-                    </div>
-                    <h5 class="mt-3 fw-semibold">Rainy Afternoon</h5>
+                <div class="song-card-info">
+                    <div class="fw-semibold text-truncate" style="color:rgba(255,255,255,0.5)">{{ req.song_title }}</div>
+                    <div class="text-white-50 small mt-1 mb-2">Generating... (~2-3 min)</div>
+                    <a href="{% url 'library' %}" class="btn btn-sm btn-outline-secondary w-100">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Check Status
+                    </a>
                 </div>
             </div>
         </div>
-    </main>
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-music-note-beamed d-block fs-1 text-white-50 mb-3"></i>
+        <p class="text-white-50">No songs yet. Create your first one!</p>
+        <a href="{% url 'create_song_form' %}" class="btn btn-primary mt-2">Start Creating</a>
+    </div>
+    {% endif %}
+
+</main>
 {% endblock %}

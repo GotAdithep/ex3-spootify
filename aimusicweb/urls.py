@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from apps.user.views import SignupView, LoginView, LogoutView, CreateUserView, ListUserView, UpdateUserView, DeleteUserView
 from apps.song_gen_request.views import CreateSongGenRequestView, ListSongGenRequestView, UpdateSongGenRequestView, DeleteSongGenRequest, SongGenStatusView
-from apps.song.views import CreateSongView, ListSongView, UpdateSongView, DeleteSongView
+from apps.song.views import CreateSongView, ListSongView, UpdateSongView, DeleteSongView, LibraryView
 from apps.shared_link.views import CreateSharedLinkView, ListSharedLinkView, UpdateSharedLinkView, DeleteSharedLinkView
 
 def google_login_redirect(request):
@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('library/', TemplateView.as_view(template_name='library.html'), name='library'),
+    path('library/', LibraryView.as_view(template_name='library.html'), name='library'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     #path('signup/', SignupView.as_view(template_name='signup.html'), name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),

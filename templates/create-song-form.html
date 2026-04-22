@@ -39,7 +39,7 @@
                                         <label class="form-label">Mood</label>
                                         <select name="mood" class="form-select bg-dark text-white border-0">
                                             <option value="happy">Happy</option>
-                                            <option value="energatic">Energetic</option>
+                                            <option value="energetic">Energetic</option>
                                             <option value="sad">Sad</option>
                                             <option value="depression">Depression</option>
                                             <option value="calm">Calm</option>
@@ -67,10 +67,24 @@
                                     <input type="text" name="occasion" class="form-control bg-dark text-white border-0" required />
                                 </div>
 
+                                <!-- INSTRUMENTAL TOGGLE -->
+                                <div class="mb-3 p-3 rounded-3" style="background: rgba(255,255,255,0.05)">
+                                    <div class="form-check form-switch mb-0">
+                                        <input class="form-check-input" type="checkbox" name="instrumental" id="instrumental" value="true">
+                                        <label class="form-check-label fw-semibold" for="instrumental">
+                                            Instrumental
+                                        </label>
+                                    </div>
+                                    <p class="text-white-50 small mb-0 mt-1">No vocals — AI generates music only. Voice type will be ignored.</p>
+                                </div>
+
                                 <!-- VOICE -->
                                 <div class="mb-3">
                                     <label class="form-label">Singer Voice Type</label>
-                                    <input type="text" name="singer_voice_type" class="form-control bg-dark text-white border-0" required />
+                                    <select name="singer_voice_type" class="form-select bg-dark text-white border-0">
+                                        <option value="female">Female</option>
+                                        <option value="male">Male</option>
+                                    </select>
                                 </div>
 
                                 <!-- STORY -->
