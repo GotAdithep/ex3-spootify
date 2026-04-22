@@ -24,9 +24,9 @@ A Django web app that lets users generate AI-powered songs using the Suno API. S
 - django-allauth (Google OAuth)
 - Django REST Framework
 
----
-
-## Prerequisites
+```bash
+cd "into folder"
+```
 
 - Python 3.10 or higher
 - pip
@@ -115,22 +115,5 @@ Open `http://127.0.0.1:8000` in your browser.
 
 ## Project Structure
 
-```
-aimusicweb/
-├── apps/
-│   ├── song/                  # Song model, library view
-│   ├── song_gen_request/      # Generation request model, Suno API integration
-│   ├── user/                  # Custom user model, auth views
-│   └── shared_link/           # Shared link model
-├── templates/
-│   ├── layouts/base.html
-│   ├── components/nav-bar.html
-│   ├── home.html
-│   ├── library.html
-│   ├── create-song-form.html
-│   └── login.html
-├── static/
-│   └── css/
-├── aimusicweb/                # Django project settings and URLs
-└── requirements.txt
-```
+can click into any data and update and delete directly too
+![alt text](image-9.png)
