@@ -1,8 +1,48 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from .forms import UserForm, UpdateUserForm
 from .models import User
+
+
+class SignupView(CreateView):
+    def get(self, request):
+        return render(request, "signup.html")
+
+    def post(self, request):
+        form = UserForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data["password"])  # hash the password
+            user.save()
+            messages.success(request, "Account created! Please log in.")
+            return redirect("login")
+        else:
+            print(form.errors)
+            messages.error(request, "Failed to create account. Please check your inputs.")
+            return redirect("signup")
+
+class LoginView(CreateView):
+    def get(self, request):
+        return render(request, "login.html")
+
+    def post(self, request):
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("library")
+        else:
+            messages.error(request, "Invalid username or password.")
+            return redirect("login")
+
+class LogoutView(CreateView):
+    def get(self, request):
+        logout(request)
+        return redirect("home")
 
 class CreateUserView(CreateView):
     def get(self, request):
