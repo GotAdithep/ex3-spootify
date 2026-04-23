@@ -12,6 +12,16 @@
         {% block css %} {% endblock %}
     </head>
     <body class="bg-body" style="height: 100vh">
+        {% if messages %}
+        <div style="position:fixed;top:1rem;right:1rem;z-index:9999;min-width:300px">
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block body %} {% endblock %}
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     </body>

@@ -1,51 +1,43 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
-from .forms import SharedLinkForm, UpdateSharedLinkForm
+import uuid
+from datetime import timedelta
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views import View
+
+from apps.song.models import Song
 from .models import SharedLink
 
-class CreateSharedLinkView(CreateView):
-    def get(self, request):
-        form = SharedLinkForm()
-        return render(request, "shared_link/create-shared-link.html", {"form": form})
-    
-    def post(self, request):
-        form = SharedLinkForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Shared link created successfully!")
+
+@method_decorator(login_required, name='dispatch')
+class CreateShareLinkView(View):
+    def post(self, request, song_id):
+        song = get_object_or_404(Song, pk=song_id, user=request.user)
+
+        existing = SharedLink.objects.filter(
+            song=song, expired_date__gt=timezone.now()
+        ).first()
+
+        if existing:
+            link = existing
         else:
-            messages.error(request, "Failed to create shared link. Please check your inputs.")
-        return redirect("create_shared_link") 
-        
+            token = uuid.uuid4().hex
+            link = SharedLink.objects.create(
+                song=song,
+                shared_url=token,
+                expired_date=timezone.now() + timedelta(days=7),
+            )
 
-class ListSharedLinkView(CreateView):
-    def get(self, request):
-        links = SharedLink.objects.all().order_by('-created_at')
-        return render(request, "shared_link/read-shared-link.html", {"links": links})
+        share_url = request.build_absolute_uri(f"/s/{link.shared_url}/")
+        return JsonResponse({"url": share_url})
 
-class UpdateSharedLinkView(UpdateView):
-    def get(self, request, link_id):
-        shared_link = get_object_or_404(SharedLink, pk=link_id)
-        form = UpdateSharedLinkForm(instance=shared_link)
-        return render(request, "shared_link/update-shared-link.html", {"form": form, "link": shared_link})
-    
-    def post(self, request, link_id):
-        shared_link = get_object_or_404(SharedLink, pk=link_id)
-        form = UpdateSharedLinkForm(request.POST, instance=shared_link)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Shared link updated successfully!")
-            return redirect("read_shared_link")
-        else:
-            messages.error(request, "Failed to update shared link. Please check your inputs.")
 
-class DeleteSharedLinkView(DeleteView):
-    def get(self, request, link_id):
-        return render(request, "shared_link/delete-shared-link.html")
-    
-    def post(self, request, link_id):
-        shared_link = get_object_or_404(SharedLink, pk=link_id)
-        shared_link.delete()
-        messages.success(request, "Shared link deleted successfully!")
-        return redirect("read_shared_link")
+class SharedSongView(View):
+    def get(self, request, token):
+        link = get_object_or_404(SharedLink, shared_url=token)
+        if link.is_expired:
+            return render(request, "shared_link/expired.html", status=410)
+        return render(request, "shared_link/shared-song.html", {"song": link.song, "link": link})

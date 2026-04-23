@@ -1,14 +1,19 @@
 from django.db import models
+from django.utils import timezone
 
-# Create your models here.
+
 class SharedLink(models.Model):
-    shared_url = models.CharField(max_length=100)
+    shared_url = models.CharField(max_length=100, unique=True)
     expired_date = models.DateTimeField()
     song = models.ForeignKey("song.Song", on_delete=models.CASCADE, related_name="shared_link")
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         db_table = "shared_link"
-        
+
     def __str__(self):
         return f"{self.shared_url} {self.expired_date}"
+
+    @property
+    def is_expired(self):
+        return timezone.now() > self.expired_date

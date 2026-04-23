@@ -5,14 +5,12 @@ class SongGenRequestForm(ModelForm):
     class Meta:
         model = SongGenRequest
         fields = [
-            "song_title", 
-            "task_id",
-            "mood", 
-            "genre", 
-            "occasion", 
-            "singer_voice_type", 
-            "generation_status",
-            "optional_story"
+            "song_title",
+            "mood",
+            "genre",
+            "occasion",
+            "singer_voice_type",
+            "optional_story",
         ]
         
 class UpdateSongGenRequestForm(ModelForm):
