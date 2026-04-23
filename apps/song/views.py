@@ -6,40 +6,22 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView, D
 from .forms import SongForm, UpdateSongForm
 from .models import Song
 from apps.song_gen_request.models import SongGenRequest
-import requests as req
-import os
+from apps.song_gen_request.factory import get_generator_strategy
+from apps.song_gen_request.utils import create_song_from_clips
+
 
 @method_decorator(login_required, name='dispatch')
 class LibraryView(ListView):
     def get(self, request):
         pending = SongGenRequest.objects.filter(user=request.user, song=None)
+        strategy = get_generator_strategy()
         for song_request in pending:
             if not song_request.task_id:
                 continue
             try:
-                suno_api_key = os.getenv("SUNO_API_KEY")
-                headers = {"Authorization": f"Bearer {suno_api_key}"}
-                resp = req.get(
-                    f"https://api.sunoapi.org/api/v1/generate/record-info?taskId={song_request.task_id}",
-                    headers=headers,
-                    timeout=10
-                )
-                json_data = resp.json()
-                if json_data.get("code") == 200 and json_data["data"]["status"].upper() == "SUCCESS":
-                    clips = json_data["data"]["response"]["sunoData"]
-                    if clips:
-                        clip = clips[0]
-                        song = Song.objects.create(
-                            title=song_request.song_title,
-                            duration=int(clip.get("duration") or 0),
-                            song_url=clip.get("audioUrl", ""),
-                            image_url=clip.get("imageUrl", ""),
-                            lyrics=clip.get("prompt", ""),
-                            user=song_request.user
-                        )
-                        song_request.song = song
-                        song_request.generation_status = SongGenRequest.Generation_Status.SUCCESS
-                        song_request.save()
+                result = strategy.get_status(song_request.task_id)
+                if result["status"] == "SUCCESS" and result.get("clips"):
+                    create_song_from_clips(song_request, result["clips"])
             except Exception:
                 continue
 
@@ -85,7 +67,7 @@ class DeleteSongView(DeleteView):
         return render(request, "song/delete-song.html")
     
     def post(self, request, song_id):
-        song = get_object_or_404(Song, pk=song_id)
+        song = get_object_or_404(Song, pk=song_id, user=request.user)
         song.delete()
         messages.success(request, "Song deleted successfully!")
-        return redirect("read_song")
+        return redirect("library")

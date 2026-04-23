@@ -21,7 +21,7 @@ from django.views.generic import TemplateView
 from apps.user.views import SignupView, LoginView, LogoutView, CreateUserView, ListUserView, UpdateUserView, DeleteUserView
 from apps.song_gen_request.views import CreateSongGenRequestView, ListSongGenRequestView, UpdateSongGenRequestView, DeleteSongGenRequest, SongGenStatusView
 from apps.song.views import CreateSongView, ListSongView, UpdateSongView, DeleteSongView, LibraryView
-from apps.shared_link.views import CreateSharedLinkView, ListSharedLinkView, UpdateSharedLinkView, DeleteSharedLinkView
+from apps.shared_link.views import CreateShareLinkView, SharedSongView
 
 def google_login_redirect(request):
     return redirect('/account/google/login/?process=login')
@@ -38,22 +38,20 @@ urlpatterns = [
     path('create-song-form/', CreateSongGenRequestView.as_view(), name="create_song_form"),
     path('get-song-status/<str:taskId>/', SongGenStatusView.as_view(), name='get-song-status'),
     path('login/google', google_login_redirect, name="login_google"),
-    
+    path('songs/<int:song_id>/share/', CreateShareLinkView.as_view(), name="create_share_link"),
+    path('s/<str:token>/', SharedSongView.as_view(), name="shared_song"),
+
     #unused path
     path('create-user/', CreateUserView.as_view(), name="create_user"),
     #path('create-song-gen-request/', CreateSongGenRequestView.as_view(), name="create_song_gen_request"),
     path('create-song/',CreateSongView.as_view(), name="create_song"),
-    path('create-shared-link',CreateSharedLinkView.as_view(), name="create_shared_link"),
     path('read-user', ListUserView.as_view(), name="read_user"),
     path('read-song-gen-request', ListSongGenRequestView.as_view(), name="read_song_gen_request"),
     path('read-song', ListSongView.as_view(), name="read_song"),
-    path('read-shared-link', ListSharedLinkView.as_view(), name="read_shared_link"),
     path("update-user/<int:user_id>/", UpdateUserView.as_view(), name="update_user"),
     path("update-song-gen-request/<int:request_id>/", UpdateSongGenRequestView.as_view(), name="update_song_gen_request"),
     path("update-song/<int:song_id>/", UpdateSongView.as_view(), name="update_song"),
-    path("update-shared-link/<int:link_id>/", UpdateSharedLinkView.as_view(), name="update_shared_link"),
     path("delete-user/<int:user_id>/", DeleteUserView.as_view(), name="delete_user"),
     path("delete-song-gen-request/<int:request_id>/", DeleteSongGenRequest.as_view(), name="delete_song_gen_request"),
     path("delete-song/<int:song_id>/", DeleteSongView.as_view(), name="delete_song"),
-    path("delete-shared-link/<int:link_id>/", DeleteSharedLinkView.as_view(), name="delete_shared_link")
 ]
