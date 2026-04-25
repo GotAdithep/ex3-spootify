@@ -159,3 +159,8 @@ when click inside song card
 ![alt text](image-6.png)
 and logs
 ![alt text](image-7.png)
+
+others 
+![alt text](image-8.png)
+------------------------
+![alt text](image-9.png)
