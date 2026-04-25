@@ -135,7 +135,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-SITE_ID = 2
+SITE_ID = 1
 LOGIN_REDIRECT_URL = '/library'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

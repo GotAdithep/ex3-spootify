@@ -64,11 +64,15 @@ pip install -r requirements.txt
 
 ### 4. Configure environment variables
 
-Create a `.env` file in the `aimusicweb/` directory:
+Create a `.env` file follwing .env.example
 
 ```env
-SUNO_API_KEY=your_suno_api_key_here
-GENERATOR_STRATEGY=suno
+SUNO_API_KEY="your-suno-api-key-here"
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_SECRET="your-google-secret"
+
+# Strategy selection: "mock" for offline testing, "suno" for real API calls
+GENERATOR_STRATEGY="suno"
 ```
 
 ### 5. Apply database migrations
@@ -77,14 +81,24 @@ GENERATOR_STRATEGY=suno
 python manage.py migrate
 ```
 
-### 6. Set up Google OAuth
+### 6. Create an admin superuser
+
+This is required to access Django admin and configure Google OAuth:
+
+```bash
+python manage.py createsuperuser
+```
+
+### 7. Set up Google OAuth
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create an OAuth 2.0 client
 2. Set the redirect URI to `http://127.0.0.1:8000/accounts/google/login/callback/`
-3. In Django admin (`/admin`), go to **Sites** and update the domain to `127.0.0.1:8000`
-4. Go to **Social applications** → Add → select Google, enter your client ID and secret
+3. Run the server, go to `http://127.0.0.1:8000/admin/` and log in with your superuser account
+4. Go to **Sites** → click the existing site → update the domain to `127.0.0.1:8000`
+5. Go to **Social applications** → Add → select Google → enter your Client ID and Secret from Google Cloud Console → move the site to "Chosen sites"
 
-### 7. Run the development server
+
+### 8. Run the development server
 
 ```bash
 python manage.py runserver
@@ -104,16 +118,44 @@ Open `http://127.0.0.1:8000` in your browser.
 
 ---
 
-## Environment Variables
+## How to run mock
+first in env file type
+```bash
+GENERATOR_STRATEGY="mock"
+```
+then run server, signin, and go to library page
+![alt text](<screenshots/Screenshot 2026-04-25 142822.png>)
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SUNO_API_KEY` | Your Suno API bearer token | — |
-| `GENERATOR_STRATEGY` | `suno` for real API, `mock` for offline testing | `suno` |
+then click on create song button and eneter anything
+![alt text](image.png)
+
+click generate
+
+![alt text](image-2.png)
+
+now mock is done. every song the same.
 
 ---
 
-## Project Structure
+## How to run suno
+first in env file type
+```bash
+GENERATOR_STRATEGY="suno"
+```
+then run server, signin, and go to library page
 
-can click into any data and update and delete directly too
-![alt text](image-9.png)
+click create song button
+![alt text](image-3.png)
+
+then generate
+![alt text](image-4.png)
+
+now the card will appear show that it is generating and can check status.
+
+ok it finished generated. the i hate software design song apprear now
+
+![alt text](image-5.png)
+when click inside song card
+![alt text](image-6.png)
+and logs
+![alt text](image-7.png)
